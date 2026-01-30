@@ -1,0 +1,11 @@
+/* Example HTML */
+<input type="radio-22-jss-9" role="point-24">
+<input type="radio-91-jss44" role="point-21">
+<input type="radio-91-jss22" role="point-24">
+
+/* Example CSS & XPath locators - using two attributes combined */
+/* CSS */
+input[type^="radio-91"][role="point-24"]
+
+/* XPath */
+//input[starts-with(@type,'radio-91') and (@role='point-24')]
