@@ -1,0 +1,48 @@
+package testng;
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+import org.testng.annotations.DataProvider;
+
+public class testng7 {
+    WebDriver driver;
+    WebDriverWait wait;
+
+    @BeforeClass
+    public void beforeClass() {
+        driver = new FirefoxDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        driver.get("https://training-support.net/webelements/login-form");
+    }
+    
+    @DataProvider(name = "credentials")
+    public static Object[][] creds() {
+        return new Object[][] { 
+            { "admina", "passwordb", "Invalid Credentials" },
+            { "adminb", "passwordb", "Invalid Credentials" }
+        };
+    }
+ 
+    @Test(dataProvider = "credentials")
+    public void loginTestCase(String username, String password,@Optional  ("Login Success!") String message) {
+        driver.findElement(By.id("username")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.xpath("//button[text()='Submit']")).click();
+        wait.until(ExpectedConditions.titleContains("Success"));
+        Assert.assertEquals("Login Success!", driver.findElement(By.tagName("h1")).getText());
+    }
+
+    @AfterClass
+    public void afterClass() {
+        driver.quit();
+    }
+}
